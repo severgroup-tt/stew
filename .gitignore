@@ -1,0 +1,6 @@
+.idea
+*.pyi
+*.pyc
+dist
+*.egg-info
+.python-version

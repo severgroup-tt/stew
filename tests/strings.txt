@@ -1,0 +1,9 @@
+[[test strings txt]]
+
+[string_one]
+en = String one
+ru = %s машина стол
+ru[1] = %s машины стола
+ru[2] = %s машин столов
+ru[3] = %s машины столам
+de = String one de
