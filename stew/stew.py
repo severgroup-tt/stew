@@ -1,21 +1,15 @@
 #!/usr/bin/env python
 # coding: utf-8
 import re
-from collections import namedtuple, defaultdict
+from collections import defaultdict
 from pathlib import Path
-from typing import Tuple, Dict, Set, List
+from typing import Tuple, List
 
 from .types import Lang, Translation, PLIndex, Key, Terms
 
-TransAndKey = namedtuple('TransAndKey', 'translation, key')
-
 TRANSLATION = re.compile(r'(.*)\s*=\s*.*$', re.S | re.MULTILINE)
 MANY_DOTS = re.compile(r'\.{4,}')
-SPACE_PUNCTUATION = re.compile(r'\s[.,?!:;]')
-PLACEHOLDERS = re.compile(r'(%\(\d*\w+\)[ds])')
 LANG_AND_INDEX = re.compile(r'([-_a-zA-Z]+)(\[\d+])?')
-
-LANG_ORDER = ['en', 'en-GB', 'ru']
 
 
 class line_reader:
@@ -75,12 +69,8 @@ class Stew:
     def __init__(self, strings_path):
         self.strings_path: Path = strings_path
         self.terms: Terms = Terms()
-        self.translations_by_language: Dict[Lang, Dict[Key, Translation]] = (
-            defaultdict(dict))
         self.comments_and_tags = defaultdict(dict)
-        self.all_langs: Set[str] = set()
         self.keys_in_order: List[Key] = []
-        self.warnings = []
 
         self._read_file()
 
@@ -103,7 +93,6 @@ class Stew:
                         continue
 
                     self.terms[key][lang][plural_index] = tran
-                    self.all_langs.add(lang)
 
 
     def _add_new_key(self, key):
