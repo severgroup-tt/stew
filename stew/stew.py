@@ -9,7 +9,7 @@ from .types import Lang, Translation, PLIndex, Key, Terms
 
 TRANSLATION = re.compile(r'(.*)\s*=\s*.*$', re.S | re.MULTILINE)
 MANY_DOTS = re.compile(r'\.{4,}')
-LANG_AND_INDEX = re.compile(r'([-_a-zA-Z]+)(\[\d+])?')
+LANG_AND_INDEX = re.compile(r'([-_a-zA-Z]+)(\[\d+\])?')
 
 
 class line_reader:
@@ -62,6 +62,8 @@ class Line(str):
         lang, index = LANG_AND_INDEX.findall(lang)[0]
         if not index:
             index = 0
+        else:
+            index = int(index.strip('[]'))
         return Lang(lang), PLIndex(index)
 
 
@@ -98,3 +100,18 @@ class Stew:
     def _add_new_key(self, key):
         if key not in self.keys_in_order:
             self.keys_in_order.append(key)
+
+
+    def formatted(self):
+        for key in self.keys_in_order:
+            yield key
+
+            if key not in self.terms:
+                continue
+
+            for lang, forms in self.terms[key].key_sorted():
+                for plural_index, translation in forms.key_sorted():
+                    pl_index_str = f'[{plural_index}]' if len(forms) > 1 and plural_index else ''
+                    yield f'    {lang}{pl_index_str} = {translation}'
+
+            yield ''
