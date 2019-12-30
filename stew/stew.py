@@ -3,7 +3,7 @@
 import re
 from collections import defaultdict
 from pathlib import Path
-from typing import Tuple, List
+from typing import Tuple, List, Set
 
 from .types import Lang, Translation, PLIndex, Key, Terms
 
@@ -73,6 +73,7 @@ class Stew:
         self.terms: Terms = Terms()
         self.comments_and_tags = defaultdict(dict)
         self.keys_in_order: List[Key] = []
+        self.all_langs: Set[Lang] = set()
 
         self._read_file()
 
@@ -95,6 +96,7 @@ class Stew:
                         continue
 
                     self.terms[key][lang][plural_index] = tran
+                    self.all_langs.update(lang)
 
 
     def _add_new_key(self, key):
