@@ -96,7 +96,7 @@ class Stew:
                         continue
 
                     self.terms[key][lang][plural_index] = tran
-                    self.all_langs.update(lang)
+                    self.all_langs.add(lang)
 
 
     def _add_new_key(self, key):
