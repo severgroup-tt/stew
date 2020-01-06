@@ -117,3 +117,9 @@ class Stew:
                     yield f'    {lang}{pl_index_str} = {translation}'
 
             yield ''
+
+
+    def write_formatted(self):
+        with open(self.strings_path, 'w') as outfile:
+            for line in self.formatted():
+                outfile.write(f'{line}\n')
