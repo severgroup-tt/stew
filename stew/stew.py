@@ -111,6 +111,9 @@ class Stew:
             if key not in self.terms:
                 continue
 
+            for tag, text in self.comments_and_tags.get(key, {}).items():
+                yield f'    {tag} = {text}'
+
             for lang, forms in self.terms[key].key_sorted():
                 for plural_index, translation in forms.key_sorted():
                     pl_index_str = f'[{plural_index}]' if len(forms) > 1 and plural_index else ''
